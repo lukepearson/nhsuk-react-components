@@ -1,0 +1,1 @@
+{"version":3,"file":"main.223be25c21f623456659.bundle.js","sources":["webpack:///./src/components/header/HeaderContext.js"],"sourcesContent":["import { createContext } from 'react';\r\n\r\nconst HeaderContext = createContext();\r\n\r\nexport default HeaderContext;\r\n"],"mappings":"AAIA","sourceRoot":""}
