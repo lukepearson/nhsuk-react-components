@@ -82,6 +82,11 @@ export default class DateInput extends Component {
     }
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps);
+    console.log(nextState);
+  }
+
   registerSingleComponent = () => {
     const { passBackError, registerComponent } = this.context;
     const { name, value, error } = this.props;
