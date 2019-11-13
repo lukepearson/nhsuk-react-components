@@ -78,13 +78,13 @@ export default class DateInput extends PureComponent {
     const { passBackError, value: contextValue } = this.context;
     const { name, error, value: propsValue } = this.props;
     const { value: stateValue } = this.state;
-    // console.log('==============')
-    // console.log('contextValue    ' + JSON.stringify(contextValue));
-    // console.log('previous props  ' + JSON.stringify(prevProps.value));
-    // console.log('current props   ' + JSON.stringify(propsValue));
-    // console.log('previous state  ' + JSON.stringify(prevState.value));
-    // console.log('current state   ' + JSON.stringify(stateValue));
-    // console.log('==============');
+    console.log('==============')
+    console.log('contextValue    ' + JSON.stringify(contextValue));
+    console.log('previous props  ' + JSON.stringify(prevProps.value));
+    console.log('current props   ' + JSON.stringify(propsValue));
+    console.log('previous state  ' + JSON.stringify(prevState.value));
+    console.log('current state   ' + JSON.stringify(stateValue));
+    console.log('==============');
     if (prevProps.value.day !== propsValue.day ||
       prevProps.value.month !== propsValue.month ||
       prevProps.value.year !== propsValue.year) {
