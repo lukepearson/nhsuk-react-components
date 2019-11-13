@@ -88,4 +88,36 @@ describe('DateInput', () => {
       expect(component.find("#dateFrom-month").props().value).toEqual("06");
       expect(component.find("#dateFrom-year").props().value).toEqual("1999");
   });
+
+  it('Updates the input values when a typed value is overwritten by a prop change', () => {
+    const initialValues = { day: '', month: '', year: '' };
+    const component = mount(
+      <DateInput 
+        label="Date From Field"
+        labelHtmlFor="date-from"
+        id="date-from"
+        name="dateFrom"
+        autoselectnext="true"
+        value={initialValues}
+        error=""
+        autoComplete="off"
+        type="tel">
+        </DateInput>
+      );
+      const checkDate = (d, m, y) => {
+        expect(component.find("#dateFrom-day").props().value).toEqual(d);
+        expect(component.find("#dateFrom-month").props().value).toEqual(m);
+        expect(component.find("#dateFrom-year").props().value).toEqual(y);
+      }
+      checkDate("", "", "");
+
+      component.setProps({ value: { day: "10", month: "06", year: "1999" }});
+      checkDate("10", "06", "1999");
+
+      component.setProps({
+        value: {day: '20', month: '10', year: '2006'}
+      }, () => {
+        checkDate("20", "10", "2006");
+      });
+  });
 });

@@ -52,8 +52,8 @@ export default class DateInput extends PureComponent {
     value: { day: '', month: '', year: '' }
   };
 
-  static sanitizeInput = (type, value) => {
-    const onlyNumbers = value.replace(/\D/g, '');
+  static sanitizeInput = (type, value = '') => {
+    const onlyNumbers = String(value).replace(/\D/g, '');
     if (type === 'day') {
       return onlyNumbers.slice(0, 2);
     }
@@ -66,9 +66,7 @@ export default class DateInput extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      data: {
-        value: props.value,
-      },
+      value: props.value,
       multiErrors: {}
     };
     this.monthRef = React.createRef();
@@ -76,9 +74,23 @@ export default class DateInput extends PureComponent {
     this.initialiseComponent();
   }
 
-  componentDidUpdate = () => {
-    const { passBackError } = this.context;
-    const { name, error } = this.props;
+  componentDidUpdate = (prevProps, prevState) => {
+    const { passBackError, value: contextValue } = this.context;
+    const { name, error, value: propsValue } = this.props;
+    const { value: stateValue } = this.state;
+    // console.log('==============')
+    // console.log('contextValue    ' + JSON.stringify(contextValue));
+    // console.log('previous props  ' + JSON.stringify(prevProps.value));
+    // console.log('current props   ' + JSON.stringify(propsValue));
+    // console.log('previous state  ' + JSON.stringify(prevState.value));
+    // console.log('current state   ' + JSON.stringify(stateValue));
+    // console.log('==============');
+    // if (prevProps.value.day !== propsValue.day ||
+    //   prevProps.value.month !== propsValue.month ||
+    //   prevProps.value.year !== propsValue.year) {
+    //   // eslint-disable-next-line react/no-did-update-set-state
+    //   this.setState({ value: propsValue });
+    // }
     if (passBackError) {
       passBackError(name, !!error, error);
     }
@@ -91,8 +103,8 @@ export default class DateInput extends PureComponent {
       passBackError(name, !!error, error);
     }
     if (registerComponent) {
-      const { data } = this.state;
-      registerComponent(name, data);
+      const { value } = this.state;
+      registerComponent(name, value);
     }
   };
 
@@ -153,12 +165,12 @@ export default class DateInput extends PureComponent {
     }
   };
 
-  handleInput = (type, value) => {
+  handleInput = (type, newValue) => {
     const { autoSelectNext, name } = this.props;
-    const { data } = this.state;
-    const sanitizedValue = DateInput.sanitizeInput(type, value);
-    const updatedData = { ...data, [type]: sanitizedValue };
-    this.setState({ data: updatedData }, () => {
+    const { value } = this.state;
+    const sanitizedValue = DateInput.sanitizeInput(type, newValue);
+    const updatedData = { ...value, [type]: sanitizedValue };
+    this.setState({ value: updatedData }, () => {
       if (autoSelectNext) this.autoSelectNextFunction(type, sanitizedValue);
       const { updateFormState } = this.context;
       if (updateFormState) {
@@ -209,11 +221,11 @@ export default class DateInput extends PureComponent {
       error,
       labelHtmlFor,
       name,
-      value,
+      value: propValue,
       autoSelectNext,
       ...rest
     } = this.props;
-    const { data, multiErrors } = this.state;
+    const { value, multiErrors } = this.state;
     const parentError = Object.keys(multiErrors).length > 0 ? false : !!error;
     const contextValue = {
       handleInput: this.handleInput,
@@ -221,7 +233,7 @@ export default class DateInput extends PureComponent {
       passBackError: this.passBackErrorFromComponent,
       parentError,
       name,
-      ...data
+      value,
     };
 
     return (
@@ -233,9 +245,9 @@ export default class DateInput extends PureComponent {
           <DateContext.Provider value={contextValue}>
             {children || (
               <>
-                <Day {...rest} value={value && value.day || ''} />
-                <Month {...rest} value={value && value.month || ''} />
-                <Year {...rest} value={value && value.year || ''} />
+                <Day {...rest} value={propValue.day} />
+                <Month {...rest} value={propValue.month} />
+                <Year {...rest} value={propValue.year} />
               </>
             )}
           </DateContext.Provider>
