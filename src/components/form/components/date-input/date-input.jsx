@@ -85,12 +85,12 @@ export default class DateInput extends PureComponent {
     // console.log('previous state  ' + JSON.stringify(prevState.value));
     // console.log('current state   ' + JSON.stringify(stateValue));
     // console.log('==============');
-    // if (prevProps.value.day !== propsValue.day ||
-    //   prevProps.value.month !== propsValue.month ||
-    //   prevProps.value.year !== propsValue.year) {
-    //   // eslint-disable-next-line react/no-did-update-set-state
-    //   this.setState({ value: propsValue });
-    // }
+    if (prevProps.value.day !== propsValue.day ||
+      prevProps.value.month !== propsValue.month ||
+      prevProps.value.year !== propsValue.year) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ value: propsValue });
+    }
     if (passBackError) {
       passBackError(name, !!error, error);
     }
